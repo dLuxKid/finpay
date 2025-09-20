@@ -7,18 +7,22 @@ import (
 )
 
 type Config struct {
-	Port   string
+	Port        string
 	MONGODB_URI string
-	DBName string
+	DBName      string
+	JWTSecret   string
+	JWTExpiry   string
 }
 
 func Load() *Config {
 	_ = godotenv.Load()
 
 	cfg := &Config{
-		Port:   getEnv("PORT", "8080"),
+		Port:        getEnv("PORT", "8080"),
 		MONGODB_URI: getEnv("DB_URI", ""),
-		DBName: getEnv("DB_NAME", "finpay"),
+		DBName:      getEnv("DB_NAME", "finpay"),
+		JWTSecret:   getEnv("JWT_SECRET", ""),
+		JWTExpiry:   getEnv("JWT_EXPIRY", "24h"),
 	}
 
 	return cfg

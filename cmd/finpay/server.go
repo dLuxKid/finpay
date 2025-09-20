@@ -16,7 +16,7 @@ func main() {
 
 	defer mongo.Client.Disconnect(context.Background())
 
-	r := routes.Routes()
+	r := routes.Routes(mongo)
 
 	r.Run(":" + cfg.Port)
 

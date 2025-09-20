@@ -13,5 +13,7 @@ func UserRoutes(r *gin.Engine) {
 		users.GET("/", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{"message": "Get all users"})
 		})
+
+		// users.GET('')
 	}
 }
