@@ -42,7 +42,7 @@ func (h *AuthHandler) CreateUser(ctx *gin.Context) { // defines a method on Auth
 	newUser.CreatedAt = time.Now()
 	newUser.UpdatedAt = time.Now()
 
-	result, err := h.mongo.Users.InsertOne(ctx, newUser)
+	res, err := h.mongo.Users.InsertOne(ctx, newUser)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to create user", "error": err.Error(), "success": false})
 		return
@@ -64,7 +64,7 @@ func (h *AuthHandler) CreateUser(ctx *gin.Context) { // defines a method on Auth
 
 	ctx.SetCookie("finpay_jwt_token", tokenString, 3600*72, "/", "", false, true)
 
-	ctx.JSON(http.StatusCreated, gin.H{"message": "User created successfully", "user": result, "token": tokenString, "success": true})
+	ctx.JSON(http.StatusCreated, gin.H{"message": "User created successfully", "user": newUser, "token": tokenString, "success": true, "id": res.InsertedID})
 }
 
 func (h *AuthHandler) Login(ctx *gin.Context) {
