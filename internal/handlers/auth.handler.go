@@ -15,15 +15,20 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type AuthHandler struct { // struct to hold the mongo instance, constructor function to create a new AuthHandler with the mongo instance
-	mongo *db.MongoInstance // this makes sure every method in AuthHandler has access to the database
+// struct to hold the mongo instance, constructor function to create a new AuthHandler with the mongo instance
+type AuthHandler struct {
+	// this makes sure every method in AuthHandler has access to the database
+	mongo *db.MongoInstance
 }
 
-func NewAuthHandler(mongo *db.MongoInstance) *AuthHandler { // constructor function
-	return &AuthHandler{mongo: mongo} // return a pointer to AuthHandler with the mongo instance, makes a new AuthHandler with the mongo instance
+// constructor function
+func NewAuthHandler(mongo *db.MongoInstance) *AuthHandler {
+	// return a pointer to AuthHandler with the mongo instance, makes a new AuthHandler with the mongo instance
+	return &AuthHandler{mongo: mongo}
 }
 
-func (h *AuthHandler) CreateUser(ctx *gin.Context) { // defines a method on AuthHandler, method to create a new user, receiver is a pointer to AuthHandler
+// defines a method on AuthHandler, method to create a new user, receiver is a pointer to AuthHandler
+func (h *AuthHandler) CreateUser(ctx *gin.Context) {
 	var newUser models.User
 
 	if err := ctx.ShouldBindJSON(&newUser); err != nil {
@@ -109,3 +114,10 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "Login successful", "user": user, "token": tokenString, "success": true})
 }
+
+func (h *AuthHandler) Logout(ctx *gin.Context) {
+	ctx.SetCookie("finpay_jwt_token", "", -1, "/", "", false, true)
+	ctx.JSON(http.StatusOK, gin.H{"message": "Logout successful", "success": true})
+}
+
+// func (h * AuthHandler) RefreshToken(ctx *gin.Context){}
